@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Metalama.Aspects;
 
 namespace Nop.Core.Infrastructure
 {

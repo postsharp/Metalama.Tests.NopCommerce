@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading;
 
-using Metalama.Aspects;
-
 namespace Nop.Core.ComponentModel
 {
     /// <summary>

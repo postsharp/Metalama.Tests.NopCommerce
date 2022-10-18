@@ -1,5 +1,4 @@
 ﻿using Nop.Core.Domain.Common;
-using Metalama.Aspects;
 
 namespace Nop.Core.Domain.Affiliates
 {

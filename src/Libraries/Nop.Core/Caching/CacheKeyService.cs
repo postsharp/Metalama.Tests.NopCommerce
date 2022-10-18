@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using Nop.Core.Configuration;
 
-using Metalama.Aspects;
-
 namespace Nop.Core.Caching
 {
     /// <summary>

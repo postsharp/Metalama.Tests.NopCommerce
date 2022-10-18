@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 
-using Metalama.Aspects;
-
 namespace Nop.Core.Configuration
 {
     /// <summary>

@@ -1,6 +1,4 @@
-﻿using Metalama.Aspects;
-
-namespace Nop.Core.Caching
+﻿namespace Nop.Core.Caching
 {
     /// <summary>
     /// Represents default values related to caching entities

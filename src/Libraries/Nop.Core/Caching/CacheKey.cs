@@ -4,11 +4,6 @@ using System.Linq;
 using Nop.Core.Configuration;
 using Nop.Core.Infrastructure;
 
-using Metalama.Aspects;
-using Metalama.Framework.Aspects;
-
-[assembly: AspectOrder( typeof(IntroductionAttribute), typeof(MethodIntroductionAttribute ) )]
-
 namespace Nop.Core.Caching
 {
     /// <summary>

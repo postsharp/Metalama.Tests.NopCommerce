@@ -4,8 +4,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 
-using Metalama.Aspects;
-
 namespace Nop.Core.ComponentModel
 {
     /// <summary>

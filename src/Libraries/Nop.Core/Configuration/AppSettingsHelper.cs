@@ -6,8 +6,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nop.Core.Infrastructure;
 
-using Metalama.Aspects;
-
 namespace Nop.Core.Configuration
 {
     /// <summary>

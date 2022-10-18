@@ -8,7 +8,6 @@ namespace Nop.Core.Configuration
     /// <summary>
     /// Represents the event that is raised when App Settings are saving
     /// </summary>
-    [Introduction]
     public class AppSettingsSavingEvent
     {
         #region Ctor

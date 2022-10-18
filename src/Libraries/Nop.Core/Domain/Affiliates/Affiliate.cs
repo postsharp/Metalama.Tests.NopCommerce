@@ -6,7 +6,6 @@ namespace Nop.Core.Domain.Affiliates
     /// <summary>
     /// Represents an affiliate
     /// </summary>
-    [Introduction]
     public partial class Affiliate : BaseEntity, ISoftDeletedEntity
     {
         /// <summary>

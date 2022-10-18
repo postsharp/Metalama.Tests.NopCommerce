@@ -5,7 +5,6 @@ namespace Nop.Core.Caching
     /// <summary>
     /// Represents default values related to caching entities
     /// </summary>
-    [Introduction]
     public static partial class NopEntityCacheDefaults<TEntity> where TEntity : BaseEntity
     {
         /// <summary>

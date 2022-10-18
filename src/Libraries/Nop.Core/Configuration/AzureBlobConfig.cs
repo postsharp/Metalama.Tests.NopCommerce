@@ -7,7 +7,6 @@ namespace Nop.Core.Configuration
     /// <summary>
     /// Represents Azure Blob storage configuration parameters
     /// </summary>
-    [Introduction]
     public partial class AzureBlobConfig : IConfig
     {
         /// <summary>

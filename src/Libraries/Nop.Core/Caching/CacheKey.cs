@@ -14,8 +14,6 @@ namespace Nop.Core.Caching
     /// <summary>
     /// Represents key for caching objects
     /// </summary>
-    [Introduction]
-    [MethodIntroduction]
     public partial class CacheKey
     {
         #region Ctor

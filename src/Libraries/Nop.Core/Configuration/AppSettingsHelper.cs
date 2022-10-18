@@ -13,7 +13,6 @@ namespace Nop.Core.Configuration
     /// <summary>
     /// Represents the app settings helper
     /// </summary>
-    [Introduction]
     public partial class AppSettingsHelper
     {
         #region Fields

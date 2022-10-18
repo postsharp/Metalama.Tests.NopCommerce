@@ -136,6 +136,7 @@ namespace Metalama.Aspects
             /* Tests causing errors */
 
             // CSC : error LAMA0001: Unexpected exception occurred in Metalama: Exception of type 'Metalama.Framework.Engine.AssertionFailedException' was thrown.
+            // (caused by global statements)
             //amender.With(p => 
             //    p.Types
             //    .Where(t => !t.IsStatic)

@@ -11,7 +11,6 @@ namespace Nop.Core.Caching
     /// <summary>
     /// Represents the default cache key service implementation
     /// </summary>
-    [Introduction]
     public abstract partial class CacheKeyService
     {
         #region Constants

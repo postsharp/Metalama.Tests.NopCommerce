@@ -1,9 +1,11 @@
 ﻿using Metalama.Aspects;
 using Metalama.Framework.Aspects;
 using Metalama.Framework.Code;
+using Metalama.Framework.Eligibility;
 using Metalama.Framework.Fabrics;
 
-[assembly: AspectOrder(typeof(IntroductionAttribute), typeof(LoggingAspect), typeof(OverrideAttribute), typeof(OverrideEventAttribute) )]
+[assembly: AspectOrder(typeof(FieldIntroductionAttribute), typeof(LoggingAspect), typeof(OverridePropertyAttribute), typeof(OverrideEventAttribute))]
+
 
 namespace Metalama.Aspects
 {
@@ -58,7 +60,7 @@ namespace Metalama.Aspects
                 .Where(it => it is not { IsOverride: true, OverriddenProperty: { IsAbstract: true, GetMethod: not null, SetMethod: null } })
                 .Where(it => it.DeclaringType is not { TypeKind: TypeKind.Interface })
                 .Where(it => !it.IsAbstract && !it.IsImplicitlyDeclared))
-            .AddAspect<OverrideAttribute>();
+            .AddAspect<OverridePropertyAttribute>();
 
             // FIXED 
             amender.With(p =>
@@ -66,14 +68,14 @@ namespace Metalama.Aspects
                 .Where(it => it is { IsOverride: true, OverriddenProperty: { IsAbstract: true, GetMethod: not null, SetMethod: null } })
                 .Where(it => it.DeclaringType is not { TypeKind: TypeKind.Interface })
                 .Where(it => !it.IsAbstract && !it.IsImplicitlyDeclared))
-            .AddAspect<OverrideAttribute>();
+            .AddAspect<OverridePropertyAttribute>();
 
             // FIXED
             amender.With(p =>
                 p.Types.SelectMany(t => t.Properties)
                 .Where(it => !it.IsAbstract && !it.IsImplicitlyDeclared)
                 .Where(it => it.DeclaringType is { TypeKind: TypeKind.Interface }))
-            .AddAspect<OverrideAttribute>();
+            .AddAspect<OverridePropertyAttribute>();
 
             #endregion
 
@@ -96,7 +98,7 @@ namespace Metalama.Aspects
                 .Where(it => !it.IsAbstract && !it.IsImplicitlyDeclared)
                 .Where(it => it is not IField { Writeability: Writeability.None })
                 .Where(it => it.DeclaringType is not { TypeKind: TypeKind.Enum or TypeKind.Interface }))
-                .AddAspect<OverrideAttribute>();
+                .AddAspect<OverridePropertyAttribute>();
 
             #endregion
 
@@ -148,48 +150,72 @@ namespace Metalama.Aspects
         }
     }
 
+    public class IntroductionFabric : TransitiveProjectFabric
+    {
+        public override void AmendProject(IProjectAmender amender)
+        {
+            amender.With(p => p.Types.Where(t => t.TypeKind is not (TypeKind.Interface or TypeKind.Enum or TypeKind.Delegate))).AddAspect<FieldIntroductionAttribute>();
+            amender.With(p => p.Types.Where(t => t.TypeKind is not (TypeKind.Interface or TypeKind.Enum or TypeKind.Delegate))).AddAspect<MethodIntroductionAttribute>();
+        }
+    }
+
     #endregion
 
     #region introduction aspects
-    public class IntroductionAttribute : TypeAspect
+    public class FieldIntroductionAttribute : TypeAspect
     {
-        [Introduce]
-        public int IntroducedProperty;
+        public override void BuildAspect(IAspectBuilder<INamedType> builder)
+        {
+            if (!builder.Target.IsStatic)
+            {
+                builder.Advice.IntroduceField(builder.Target, nameof(IntroducedField), whenExists: OverrideStrategy.Ignore);
+                builder.Advice.IntroduceField(builder.Target, nameof(IntroducedField_Initializer), whenExists: OverrideStrategy.Ignore);
+            }
 
-        [Introduce]
-        public static int IntroducedProperty_Static;
+            builder.Advice.IntroduceField(builder.Target, nameof(IntroducedField_Static), whenExists: OverrideStrategy.Ignore);
+            builder.Advice.IntroduceField(builder.Target, nameof(IntroducedField_Static_Initializer), whenExists: OverrideStrategy.Ignore);
+        }
 
-        [Introduce]
+        [Template]
+        public int IntroducedField;
+
+        [Template]
+        public static int IntroducedField_Static;
+
+        [Template]
         public int IntroducedField_Initializer = 42;
 
-        [Introduce]
+        [Template]
         public static int IntroducedField_Static_Initializer = 42;
-
-        [Introduce]
-        public event EventHandler? IntroducedEvent
-        {
-            add
-            {
-                Console.WriteLine("Introduced event add accessor.");
-            }
-
-            remove
-            {
-                Console.WriteLine("Introduced event remove accessor.");
-            }
-        }
     }
 
     public class MethodIntroductionAttribute : TypeAspect
     {
-        [Introduce]
+        public override void BuildAspect(IAspectBuilder<INamedType> builder)
+        {
+            if (!builder.Target.IsStatic)
+            {
+                builder.Advice.IntroduceMethod(builder.Target, nameof(IntroducedMethod_Void), whenExists: OverrideStrategy.Ignore);
+                builder.Advice.IntroduceMethod(builder.Target, nameof(IntroducedMethod_Int), whenExists: OverrideStrategy.Ignore);
+                builder.Advice.IntroduceMethod(builder.Target, nameof(IntroducedMethod_Param), whenExists: OverrideStrategy.Ignore);
+            }
+
+            if (!builder.Target.IsStatic && !builder.Target.IsSealed && builder.Target is not { TypeKind: TypeKind.Struct or TypeKind.RecordStruct} )
+            {
+                builder.Advice.IntroduceMethod(builder.Target, nameof(IntroducedMethod_Virtual), whenExists: OverrideStrategy.Ignore);
+            }
+
+            builder.Advice.IntroduceMethod(builder.Target, nameof(IntroducedMethod_Static), whenExists: OverrideStrategy.Ignore);
+        }
+
+        [Template]
         public void IntroducedMethod_Void()
         {
             Console.WriteLine("This is introduced method.");
             meta.Proceed();
         }
 
-        [Introduce]
+        [Template]
         public int IntroducedMethod_Int()
         {
             Console.WriteLine("This is introduced method.");
@@ -197,7 +223,7 @@ namespace Metalama.Aspects
             return meta.Proceed();
         }
 
-        [Introduce]
+        [Template]
         public int IntroducedMethod_Param(int x)
         {
             Console.WriteLine($"This is introduced method, x = {x}.");
@@ -205,35 +231,20 @@ namespace Metalama.Aspects
             return meta.Proceed();
         }
 
-        [Introduce]
-        public static int IntroducedMethod_StaticSignature()
+        [Template]
+        public static int IntroducedMethod_Static()
         {
             Console.WriteLine("This is introduced method.");
 
             return meta.Proceed();
         }
 
-        [Introduce(IsVirtual = true)]
-        public int IntroducedMethod_VirtualExplicit()
+        [Template]
+        public int IntroducedMethod_Virtual()
         {
             Console.WriteLine("This is introduced method.");
 
             return meta.Proceed();
-        }
-    }
-
-    public class OverrideEventAttribute : OverrideEventAspect
-    {
-        public override void OverrideAdd(dynamic value)
-        {
-            Console.WriteLine("Overriden add.");
-            meta.Proceed();
-        }
-
-        public override void OverrideRemove(dynamic value)
-        {
-            Console.WriteLine("Overriden remove.");
-            meta.Proceed();
         }
     }
 
@@ -352,7 +363,7 @@ namespace Metalama.Aspects
         }
     }
 
-    public class OverrideAttribute : OverrideFieldOrPropertyAspect
+    public class OverridePropertyAttribute : OverrideFieldOrPropertyAspect
     {
         public override dynamic? OverrideProperty
         {
@@ -367,6 +378,21 @@ namespace Metalama.Aspects
                 Console.WriteLine($"This is the overridden setter.");
                 meta.Proceed();
             }
+        }
+    }
+
+    public class OverrideEventAttribute : OverrideEventAspect
+    {
+        public override void OverrideAdd(dynamic value)
+        {
+            Console.WriteLine("Overriden add.");
+            meta.Proceed();
+        }
+
+        public override void OverrideRemove(dynamic value)
+        {
+            Console.WriteLine("Overriden remove.");
+            meta.Proceed();
         }
     }
 

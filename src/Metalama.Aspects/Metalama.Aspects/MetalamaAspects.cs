@@ -154,8 +154,8 @@ namespace Metalama.Aspects
     {
         public override void AmendProject(IProjectAmender amender)
         {
-            amender.With(p => p.Types.Where(t => t.TypeKind is not (TypeKind.Interface or TypeKind.Enum or TypeKind.Delegate))).AddAspect<FieldIntroductionAttribute>();
-            amender.With(p => p.Types.Where(t => t.TypeKind is not (TypeKind.Interface or TypeKind.Enum or TypeKind.Delegate))).AddAspect<MethodIntroductionAttribute>();
+            amender.With(p => p.Types.Where(t => t.TypeKind is not (TypeKind.Interface or TypeKind.Enum or TypeKind.Delegate) && !t.IsImplicitlyDeclared)).AddAspect<FieldIntroductionAttribute>();
+            amender.With(p => p.Types.Where(t => t.TypeKind is not (TypeKind.Interface or TypeKind.Enum or TypeKind.Delegate) && !t.IsImplicitlyDeclared)).AddAspect<MethodIntroductionAttribute>();
         }
     }
 

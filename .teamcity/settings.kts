@@ -13,8 +13,73 @@ version = "2021.2"
 
 project {
 
+   buildType(DebugBuild)
    buildType(PublicBuild)
+   buildType(PublicDeployment)
+   buildTypesOrder = arrayListOf(DebugBuild,PublicBuild,PublicDeployment)
 }
+
+object DebugBuild : BuildType({
+
+    name = "Build [Debug]"
+
+    artifactRules = "+:artifacts/publish/public/**/*=>artifacts/publish/public\n+:artifacts/publish/private/**/*=>artifacts/publish/private\n+:artifacts/logs/**/*=>logs\n+:%system.teamcity.build.tempDir%/Metalama/AssemblyLocator/**/*=>logs\n+:%system.teamcity.build.tempDir%/Metalama/CompileTime/**/.completed=>logs\n+:%system.teamcity.build.tempDir%/Metalama/CompileTimeTroubleshooting/**/*=>logs\n+:%system.teamcity.build.tempDir%/Metalama/CrashReports/**/*=>logs\n+:%system.teamcity.build.tempDir%/Metalama/Extract/**/.completed=>logs\n+:%system.teamcity.build.tempDir%/Metalama/ExtractExceptions/**/*=>logs\n+:%system.teamcity.build.tempDir%/Metalama/Logs/**/*=>logs"
+
+    vcs {
+        root(DslContext.settingsRoot)
+    }
+
+    steps {
+        // Step to kill all dotnet or VBCSCompiler processes that might be locking files we delete in during cleanup.
+        powerShell {
+            name = "Kill background processes before cleanup"
+            scriptMode = file {
+                path = "Build.ps1"
+            }
+            noProfile = false
+            param("jetbrains_powershell_scriptArguments", "tools kill")
+        }
+        powerShell {
+            name = "Build [Debug]"
+            scriptMode = file {
+                path = "Build.ps1"
+            }
+            noProfile = false
+            param("jetbrains_powershell_scriptArguments", "test --configuration Debug --buildNumber %build.number%")
+        }
+    }
+
+    requirements {
+        equals("env.BuildAgentType", "caravela03")
+    }
+
+    features {
+        swabra {
+            lockingProcesses = Swabra.LockingProcessPolicy.KILL
+            verbose = true
+        }
+    }
+
+    triggers {
+
+        vcs {
+            watchChangesInDependencies = true
+            branchFilter = "+:<default>"
+            // Build will not trigger automatically if the commit message contains comment value.
+            triggerRules = "-:comment=<<VERSION_BUMP>>|<<DEPENDENCIES_UPDATED>>:**"
+        }        
+
+    }
+
+    dependencies {
+
+        snapshot(AbsoluteId("Metalama_Metalama_DebugBuild")) {
+                     onDependencyFailure = FailureAction.FAIL_TO_START
+                }
+
+     }
+
+})
 
 object PublicBuild : BuildType({
 
@@ -47,7 +112,7 @@ object PublicBuild : BuildType({
     }
 
     requirements {
-        equals("env.BuildAgentType", "caravela02")
+        equals("env.BuildAgentType", "caravela03")
     }
 
     features {
@@ -66,3 +131,61 @@ object PublicBuild : BuildType({
      }
 
 })
+
+object PublicDeployment : BuildType({
+
+    name = "Deploy [Public]"
+
+    type = Type.DEPLOYMENT
+
+    vcs {
+        root(DslContext.settingsRoot)
+    }
+
+    steps {
+        powerShell {
+            name = "Deploy [Public]"
+            scriptMode = file {
+                path = "Build.ps1"
+            }
+            noProfile = false
+            param("jetbrains_powershell_scriptArguments", "publish --configuration Public")
+        }
+    }
+
+    requirements {
+        equals("env.BuildAgentType", "caravela03")
+    }
+
+    features {
+        swabra {
+            lockingProcesses = Swabra.LockingProcessPolicy.KILL
+            verbose = true
+        }
+        sshAgent {
+            // By convention, the SSH key name is always PostSharp.Engineering for all repositories using SSH to connect.
+            teamcitySshKey = "PostSharp.Engineering"
+        }
+    }
+
+    dependencies {
+
+        snapshot(AbsoluteId("Metalama_Metalama_PublicDeployment")) {
+                     onDependencyFailure = FailureAction.FAIL_TO_START
+                }
+
+        dependency(PublicBuild) {
+            snapshot {
+                onDependencyFailure = FailureAction.FAIL_TO_START
+            }
+
+            artifacts {
+                cleanDestination = true
+                artifactRules = "+:artifacts/publish/public/**/*=>artifacts/publish/public\n+:artifacts/publish/private/**/*=>artifacts/publish/private"
+            }
+        }
+
+     }
+
+})
+

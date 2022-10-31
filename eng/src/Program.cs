@@ -11,9 +11,7 @@ var product = new Product(TestDependencies.NopCommerce)
 {
     Solutions = new Solution[]
     {
-        //new DotNetSolution( "src\\NopCommerce.sln" ) { BuildMethod = BuildMethod.Build },
-        new ManyDotNetSolutions( "src\\Libraries\\**\\*.csproj" ) { BuildMethod = BuildMethod.Build },
-        //new DotNetSolution( "src\\Presentation\\Nop.Web\\Nop.Web.csproj") { BuildMethod = BuildMethod.Build }
+        new DotNetSolution( "src\\NopCommerce.sln" ) { BuildMethod = BuildMethod.Build }        
     },
     Dependencies = new[] { Dependencies.PostSharpEngineering, Dependencies.Metalama },
 };

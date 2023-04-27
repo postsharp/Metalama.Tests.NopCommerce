@@ -12,7 +12,6 @@ var productDependencyDefinition =
 
 var product = new Product(productDependencyDefinition)
 {
-    ProductName = productDependencyDefinition.Name,
     Solutions = new Solution[]
     {
         new DotNetSolution("src\\NopCommerce.sln"),

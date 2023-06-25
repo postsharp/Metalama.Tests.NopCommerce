@@ -8,9 +8,7 @@ using PostSharp.Engineering.BuildTools.Dependencies.Definitions;
 using Spectre.Console.Cli;
 using MetalamaDependencies = PostSharp.Engineering.BuildTools.Dependencies.Definitions.MetalamaDependencies.V2023_2;
 
-var productDependencyDefinition = MetalamaDependencies.NopCommerce;
-
-var product = new Product(productDependencyDefinition)
+var product = new Product(MetalamaDependencies.NopCommerce)
 {
     Solutions = new Solution[]
     {

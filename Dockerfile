@@ -80,6 +80,7 @@ RUN chmod 755 /entrypoint.sh
 
 WORKDIR /app        
 RUN mkdir bin
+
 RUN mkdir logs 
 
 COPY --from=build /app/published .

@@ -4,16 +4,20 @@
 using PostSharp.Engineering.BuildTools;
 using PostSharp.Engineering.BuildTools.Build.Model;
 using PostSharp.Engineering.BuildTools.Build.Solutions;
-using PostSharp.Engineering.BuildTools.Dependencies.Model;
+using PostSharp.Engineering.BuildTools.Dependencies.Definitions;
 using Spectre.Console.Cli;
+using MetalamaDependencies = PostSharp.Engineering.BuildTools.Dependencies.Definitions.MetalamaDependencies.V2023_0;
 
-var product = new Product(TestDependencies.NopCommerce)
+var product = new Product(MetalamaDependencies.NopCommerce)
 {
     Solutions = new Solution[]
     {
-        new DotNetSolution( "src\\NopCommerce.sln" ) { BuildMethod = BuildMethod.Build, TestMethod = BuildMethod.Build }        
+        new DotNetSolution("src\\NopCommerce.sln")
+        {
+            BuildMethod = BuildMethod.Build, TestMethod = BuildMethod.Build
+        }
     },
-    Dependencies = new[] { Dependencies.PostSharpEngineering, Dependencies.Metalama },
+    Dependencies = new[] { DevelopmentDependencies.PostSharpEngineering, MetalamaDependencies.Metalama },
 };
 
 var commandApp = new CommandApp();

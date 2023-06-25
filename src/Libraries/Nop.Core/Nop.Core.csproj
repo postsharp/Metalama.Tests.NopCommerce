@@ -29,6 +29,15 @@
     <PackageReference Include="Nito.AsyncEx.Coordination" Version="5.1.2" />
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+
+    <!-- <Metalama> -->
+    <PackageReference Include="Metalama.Framework" Version="$(MetalamaVersion)" />
+    <!-- </Metalama> -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Metalama Transitive Project Fabric Aspects -->
+    <ProjectReference Include="..\..\Metalama.Aspects\Metalama.Aspects\Metalama.Aspects.csproj" />
   </ItemGroup>
 
 </Project>

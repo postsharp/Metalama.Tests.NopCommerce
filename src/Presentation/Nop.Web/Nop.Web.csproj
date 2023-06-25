@@ -7,7 +7,7 @@
     <Authors>Nop Solutions, Ltd</Authors>
     <Version>4.5.0.0</Version>
     <Description>Nop.Web is also an MVC web application project, a presentation layer for public store and admin area.</Description>
-    <PackageLicenseUrl>https://www.nopcommerce.com/license</PackageLicenseUrl>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageProjectUrl>https://www.nopcommerce.com/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nopSolutions/nopCommerce</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
@@ -108,5 +108,10 @@
       More details here: https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals#concurrent-garbage-collection-->
     <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Metalama Transitive Project Fabric Aspects -->
+    <ProjectReference Include="..\..\Metalama.Aspects\Metalama.Aspects\Metalama.Aspects.csproj" />
+  </ItemGroup>
 
 </Project>

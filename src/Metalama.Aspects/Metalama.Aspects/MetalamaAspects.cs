@@ -622,7 +622,7 @@ namespace Metalama.Aspects
     {
         public override void Validate( dynamic? value )
         {
-            AspectLog.Write("Contract on {meta.Target.Parameter.Name}");
+            AspectLog.Write($"Contract on {meta.Target.Parameter.Name}");
         }
     }
 

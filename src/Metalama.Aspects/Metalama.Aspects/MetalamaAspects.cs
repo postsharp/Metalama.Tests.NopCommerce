@@ -294,17 +294,48 @@ namespace Metalama.Aspects
 
     #endregion
 
+
+    [CompileTime]
+    public class IntroductionHelper
+    {
+        [CompileTime]
+        public static bool IsSkipped(IType type)
+        {
+            // Introductions should skip these types because there are tests that check fields and properties.
+            var skippedTypes =
+                new[]
+                {
+                    "Nop.Core.BaseEntity",
+                    "Nop.Web.Framework.Models.BaseNopModel",
+                    "Nop.Core.Configuration.ISettings",
+                    "Nop.Core.Configuration.IConfig",
+                }.Select(n =>
+                {
+                    try
+                    {
+                        return TypeFactory.GetType(n);
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }
+                );
+
+            return skippedTypes.Any(t => t == null || type.Is(t));
+        }
+    }
+
     #region introduction aspects
     public class FieldIntroductionAttribute : TypeAspect
     {
         public override void BuildAspect(IAspectBuilder<INamedType> builder)
         {
-            if (!builder.Target.IsStatic)
+            if (!builder.Target.IsStatic 
+                && !builder.Target.AllMembers().Any(m => m.Name == nameof(IntroducedField))
+                && !IntroductionHelper.IsSkipped(builder.Target))
             {
-                if (!builder.Target.AllMembers().Any(m => m.Name == nameof(IntroducedField)))
-                {
-                    builder.Advice.IntroduceField(builder.Target, nameof(IntroducedField), whenExists: OverrideStrategy.Ignore);
-                }
+                builder.Advice.IntroduceField(builder.Target, nameof(IntroducedField), whenExists: OverrideStrategy.Ignore);
             }
 
             if (!builder.Target.AllMembers().Any(m => m.Name == nameof(IntroducedField_Static)))
@@ -324,7 +355,8 @@ namespace Metalama.Aspects
     {
         public override void BuildAspect(IAspectBuilder<INamedType> builder)
         {
-            if (!builder.Target.IsStatic)
+            if (!builder.Target.IsStatic
+                && !IntroductionHelper.IsSkipped(builder.Target))
             {
                 if (!builder.Target.AllMembers().Any(m => m.Name == nameof(IntroducedProperty)))
                 {

@@ -14,7 +14,6 @@ var product = new Product(MetalamaDependencies.NopCommerce)
     {
         new DotNetSolution("src\\NopCommerce.sln"),
     },
-    PublicArtifacts = Pattern.Create("Nop.Web.Framework.4.5.0.nupkg"),
     Dependencies = new[] { DevelopmentDependencies.PostSharpEngineering, MetalamaDependencies.Metalama },
 };
 

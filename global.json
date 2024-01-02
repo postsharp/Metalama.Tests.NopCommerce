@@ -5,6 +5,6 @@
     "allowPrerelease": false
   },
   "msbuild-sdks": {
-    "PostSharp.Engineering.Sdk": "2023.2.68"
+    "PostSharp.Engineering.Sdk": "2023.2.70"
   }
 }

@@ -12,7 +12,7 @@ var product = new Product(MetalamaDependencies.NopCommerce)
 {
     Solutions = new Solution[]
     {
-        new DotNetSolution("src\\NopCommerce.sln"),
+        new DotNetSolution( System.IO.Path.Combine( "src", "NopCommerce.sln" ) ),
     },
     Dependencies = new[] { DevelopmentDependencies.PostSharpEngineering, MetalamaDependencies.Metalama },
 };

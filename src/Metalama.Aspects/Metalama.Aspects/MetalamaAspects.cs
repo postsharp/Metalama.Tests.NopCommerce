@@ -10,6 +10,7 @@ using Metalama.Framework.Fabrics;
  */
 
 [assembly: AspectOrder(
+    typeof(FieldOrPropertyContract),
     typeof(UninlineableOverrideAspect),
     typeof(ForcedJumpOverrideAspect),
     typeof(LoggingAspect),
@@ -164,7 +165,7 @@ namespace Metalama.Aspects
                     p.Types.SelectMany(t => t.Properties )
                     .Where(m => !m.IsAbstract && !m.IsImplicitlyDeclared))
                     .Where(it => it.GetMethod == null || it.GetMethod.GetIteratorInfo().EnumerableKind == EnumerableKind.None)
-                .AddAspect<FieldOrPropertyContract>();
+                .AddAspects(new FieldOrPropertyContract() );
 
             #endregion
 
@@ -207,7 +208,7 @@ namespace Metalama.Aspects
                     .Where(it => it is not IField { Writeability: Writeability.None })
                     .Where(it => it.GetMethod!.GetIteratorInfo().EnumerableKind == EnumerableKind.None)
                     .Where(it => it.DeclaringType is not { TypeKind: TypeKind.Enum or TypeKind.Interface }))
-                .AddAspect<FieldOrPropertyContract>();
+                .AddAspects( new FieldOrPropertyContract() );
 
             #endregion
 

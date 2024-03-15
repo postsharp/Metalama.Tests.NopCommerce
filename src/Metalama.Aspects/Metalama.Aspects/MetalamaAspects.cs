@@ -80,7 +80,7 @@ namespace Metalama.Aspects
                     !m.IsAbstract 
                     && !m.IsImplicitlyDeclared
                     && m.GetIteratorInfo() is {IsIteratorMethod: false, EnumerableKind: not EnumerableKind.IAsyncEnumerable and not EnumerableKind.IAsyncEnumerator} ))
-               .AddAspect<LoggingAspect>();            
+               .AddAspect<LoggingAspect>();
 
             // Contracts.
             amender
@@ -89,6 +89,7 @@ namespace Metalama.Aspects
                     .SelectMany( t => t.Methods )
                     .Where(m => m.Name=="Dispose")
                     .Where(m => !m.IsImplicitlyDeclared )
+                    .Where(m => m is not { IsPartial: true, HasImplementation: false } )
                     .Where(m => m.ReturnType != TypeFactory.GetType(SpecialType.Void) && m.GetAsyncInfo().ResultType != TypeFactory.GetType(SpecialType.Void) ) 
                     .Where(m => m.GetIteratorInfo() is not {IsIteratorMethod: true, EnumerableKind: EnumerableKind.IAsyncEnumerable } )
                     .Select(m => m.ReturnParameter))
@@ -99,6 +100,7 @@ namespace Metalama.Aspects
                     p.Types
                     .SelectMany( t => 
                         t.Methods
+                        .Where(m => m is not { IsPartial: true, HasImplementation: false } )
                         .Where(m => !m.IsImplicitlyDeclared ) )
                     .SelectMany(m => m.Parameters))
                 .AddAspect<ParameterContract>();

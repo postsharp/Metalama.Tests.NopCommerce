@@ -1,8 +1,9 @@
 ﻿using Metalama.Aspects;
 using Metalama.Framework.Aspects;
 using Metalama.Framework.Code;
-using Metalama.Framework.Eligibility;
 using Metalama.Framework.Fabrics;
+
+#if !BENCHMARK
 
 /*
  * IMPORTANT: Templates should not create string literals that depend on names/display strings.
@@ -87,7 +88,6 @@ namespace Metalama.Aspects
                 .Outbound.SelectMany(p => 
                     p.Types
                     .SelectMany( t => t.Methods )
-                    .Where(m => m.Name=="Dispose")
                     .Where(m => !m.IsImplicitlyDeclared )
                     .Where(m => m is not { IsPartial: true, HasImplementation: false } )
                     .Where(m => m.ReturnType != TypeFactory.GetType(SpecialType.Void) && m.GetAsyncInfo().ResultType != TypeFactory.GetType(SpecialType.Void) ) 
@@ -670,3 +670,5 @@ namespace Metalama.Aspects
 
     #endregion
 }
+
+#endif

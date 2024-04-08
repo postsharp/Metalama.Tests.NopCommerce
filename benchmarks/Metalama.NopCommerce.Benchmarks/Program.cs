@@ -96,10 +96,43 @@ public class Benchmark
     [IterationSetup(Target = nameof(WithMetalama))]
     public void SetupWithMetalama() => RunDotnetClean(SOLUTION).Wait();
 
+    [Arguments(1, 10)]
+    [Arguments(1, 50)]
+    [Arguments(1, 100)]
+    [Arguments(10, 10)]
+    [Arguments(10, 50)]
+    [Arguments(10, 100)]
+    [Arguments(50, 10)]
+    [Arguments(50, 50)]
+    [Arguments(50, 100)]
+    [Arguments(100, 10)]
+    [Arguments(100, 50)]
+    [Arguments(100, 100)]
     [Benchmark]
-    public Task WithMetalama() => RunDotnetBuild(SOLUTION, new Dictionary<string, string>
+    public Task WithMetalama(int benchmarkedTypesPercentage, int benchmarkedMembersPercentage)
     {
-        ["MetalamaEnabled"] = "true",
-        ["ExtraConstants"] = "BENCHMARK"
-    });
+        static int calculateFractionInverse(int percentage)
+        {
+            var fractionInverse = 1 / (percentage / 100.0);
+            var fractionInverseInt = (int)fractionInverse;
+
+            if (fractionInverse != fractionInverseInt)
+            {
+                throw new ArgumentException($"Invalid percentage: {percentage}");
+            }
+
+            return fractionInverseInt;
+        }
+
+        var benchmarkedTypesFractionInverse = calculateFractionInverse(benchmarkedTypesPercentage);
+        var benchmarkedMembersFractionInverse = calculateFractionInverse(benchmarkedMembersPercentage);
+
+        return RunDotnetBuild(SOLUTION, new Dictionary<string, string>
+        {
+            ["MetalamaEnabled"] = "true",
+            ["ExtraConstants"] = "BENCHMARK",
+            ["BenchmarkedTypesFractionInverse"] = benchmarkedTypesFractionInverse.ToString(),
+            ["BenchmarkedMembersFractionInverse"] = benchmarkedMembersFractionInverse.ToString()
+        });
+    }
 }

@@ -19,11 +19,24 @@ internal class NotNullFabric : TransitiveProjectFabric
             _ => throw new NotSupportedException($"Unexpected member '{member}'")
         };
 
+        if (!amender.Project.TryGetProperty("BenchmarkedTypesFractionInverse", out var benchmarkedTypesFractionInverseString)
+            || !int.TryParse(benchmarkedTypesFractionInverseString, out var benchmarkedTypesFractionInverse))
+        {
+            benchmarkedTypesFractionInverse = 1;
+        }
+
+        if (!amender.Project.TryGetProperty("BenchmarkedMembersFractionInverse", out var benchmarkedMembersFractionInverseString)
+            || !int.TryParse(benchmarkedMembersFractionInverseString, out var benchmarkedMembersFractionInverse))
+        {
+            benchmarkedMembersFractionInverse = 1;
+        }
+
         amender.Outbound
             .SelectMany(p => p.AllTypes)
+            .Where(t => GetStringHashCode(t.ToDisplayString(CodeDisplayFormat.FullyQualified)) % benchmarkedTypesFractionInverse == 0)
             .SelectMany(t => t.Members())
             .SelectMany(getMethods)
-            .Where(m => GetStringHashCode(m.ToDisplayString(CodeDisplayFormat.FullyQualified)) % 10 == 0)
+            .Where(m => GetStringHashCode(m.ToDisplayString(CodeDisplayFormat.FullyQualified)) % benchmarkedMembersFractionInverse == 0)
             .AddAspectIfEligible<LogAspect>();
     }
 

@@ -310,7 +310,7 @@ namespace Metalama.Aspects
                     "Nop.Core.BaseEntity",
                     "Nop.Web.Framework.Models.BaseNopModel",
                     "Nop.Core.Configuration.ISettings",
-                    "Nop.Core.Configuration.IConfig",
+                    "Nop.Core.Configuration.IConfig"
                 }.Select(n =>
                 {
                     try

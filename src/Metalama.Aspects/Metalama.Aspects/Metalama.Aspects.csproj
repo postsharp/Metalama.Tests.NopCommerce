@@ -9,11 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <CompilerVisibleProperty Include="BenchmarkedTypesFractionInverse" />
-    <CompilerVisibleProperty Include="BenchmarkedMembersFractionInverse" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Metalama.Framework" Version="$(MetalamaVersion)" />
   </ItemGroup>
 </Project>

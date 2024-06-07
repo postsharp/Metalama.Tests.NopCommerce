@@ -93,7 +93,7 @@ namespace Metalama.Aspects
                     .Where(m => m.ReturnType != TypeFactory.GetType(SpecialType.Void) && m.GetAsyncInfo().ResultType != TypeFactory.GetType(SpecialType.Void) ) 
                     .Where(m => m.GetIteratorInfo() is not {IsIteratorMethod: true, EnumerableKind: EnumerableKind.IAsyncEnumerable } )
                     .Select(m => m.ReturnParameter))
-                .AddAspect<ParameterContract>();
+                .AddAspectIfEligible<ParameterContract>();
 
             amender
                 .Outbound.SelectMany(p => 
@@ -103,7 +103,7 @@ namespace Metalama.Aspects
                         .Where(m => m is not { IsPartial: true, HasImplementation: false } )
                         .Where(m => !m.IsImplicitlyDeclared ) )
                     .SelectMany(m => m.Parameters))
-                .AddAspect<ParameterContract>();
+                .AddAspectIfEligible<ParameterContract>();
                
             #endregion
 

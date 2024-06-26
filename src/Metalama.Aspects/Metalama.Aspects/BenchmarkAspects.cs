@@ -31,7 +31,7 @@ internal class NotNullFabric : TransitiveProjectFabric
             benchmarkedMembersFractionInverse = 1;
         }
 
-        amender.Outbound
+        amender
             .SelectMany(p => p.AllTypes)
             .Where(t => GetStringHashCode(t.ToDisplayString(CodeDisplayFormat.FullyQualified)) % benchmarkedTypesFractionInverse == 0)
             .SelectMany(t => t.Members())
@@ -80,7 +80,7 @@ internal class LogAspect : OverrideMethodAspect
         stringBuilder.AddText(".");
         stringBuilder.AddText(meta.Target.Method.Name);
         stringBuilder.AddText("(");
-        var first = meta.CompileTime(true);
+        var first = true;
 
         foreach (var p in meta.Target.Parameters)
         {
@@ -93,7 +93,7 @@ internal class LogAspect : OverrideMethodAspect
             else
             {
                 stringBuilder.AddText($"{comma}{p.Name}: ");
-                stringBuilder.AddExpression(p.Value);
+                stringBuilder.AddExpression(p);
             }
 
             first = false;

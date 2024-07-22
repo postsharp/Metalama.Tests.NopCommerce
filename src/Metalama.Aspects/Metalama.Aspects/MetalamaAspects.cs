@@ -618,7 +618,7 @@ namespace Metalama.Aspects
     {
         public override dynamic? OverrideMethod()
         {
-            if (new Random().Next() == 0)
+            if (meta.RunTime(Random.Shared.Next()) == 0)
             {
                 AspectLog.Write($"Uninlineable: randomly");
                 return meta.Proceed();
@@ -637,7 +637,7 @@ namespace Metalama.Aspects
         {
             var x = meta.Proceed();
 
-            if (new Random().Next() == 0)
+            if (meta.RunTime(Random.Shared.Next()) == 0)
             {
                 AspectLog.Write($"ForcedJump: randomly");
                 return x;

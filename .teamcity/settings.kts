@@ -36,7 +36,7 @@ object DebugBuild : BuildType({
     }
 
     vcs {
-        root(AbsoluteId("Metalama_Metalama20241_MetalamaTests_MetalamaTestsNopCommerce"))
+        root(AbsoluteId("Metalama_Metalama20241_MetalamaTestsNopCommerce"))
     }
 
     steps {
@@ -160,7 +160,7 @@ object ReleaseBuild : BuildType({
     }
 
     vcs {
-        root(AbsoluteId("Metalama_Metalama20241_MetalamaTests_MetalamaTestsNopCommerce"))
+        root(AbsoluteId("Metalama_Metalama20241_MetalamaTestsNopCommerce"))
     }
 
     steps {
@@ -275,7 +275,7 @@ object PublicBuild : BuildType({
     }
 
     vcs {
-        root(AbsoluteId("Metalama_Metalama20241_MetalamaTests_MetalamaTestsNopCommerce"))
+        root(AbsoluteId("Metalama_Metalama20241_MetalamaTestsNopCommerce"))
     }
 
     steps {
@@ -390,7 +390,7 @@ object PublicDeployment : BuildType({
     }
 
     vcs {
-        root(AbsoluteId("Metalama_Metalama20241_MetalamaTests_MetalamaTestsNopCommerce"))
+        root(AbsoluteId("Metalama_Metalama20241_MetalamaTestsNopCommerce"))
     }
 
     steps {
@@ -504,7 +504,7 @@ object DownstreamMerge : BuildType({
     }
 
     vcs {
-        root(AbsoluteId("Metalama_Metalama20241_MetalamaTests_MetalamaTestsNopCommerce"))
+        root(AbsoluteId("Metalama_Metalama20241_MetalamaTestsNopCommerce"))
     }
 
     steps {

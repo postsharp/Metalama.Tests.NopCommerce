@@ -31,12 +31,12 @@ object DebugBuild : BuildType({
 
     params {
         text("BuildArguments", "", label = "Build Arguments", description = "Arguments to append to the 'Build' build step.", allowEmpty = true)
-        text("DefaultBranch", "dev/2024.2", label = "Default Branch", description = "The default branch of this build configuration.")
+        text("DefaultBranch_MetalamaTestsNopCommerce", "dev/2024.2", label = "Default Branch", description = "The default branch of this build configuration.")
         text("TimeOut", "300", label = "Time-Out Threshold", description = "Seconds after the duration of the last successful build.", regex = """\d+""", validationMessage = "The timeout has to be an integer number.")
     }
 
     vcs {
-        root(AbsoluteId("Metalama_Metalama20242_MetalamaTests_MetalamaTestsNopCommerce"))
+        root(AbsoluteId("Metalama_Metalama20242_MetalamaTestsNopCommerce"))
     }
 
     steps {
@@ -155,12 +155,12 @@ object ReleaseBuild : BuildType({
 
     params {
         text("BuildArguments", "", label = "Build Arguments", description = "Arguments to append to the 'Build' build step.", allowEmpty = true)
-        text("DefaultBranch", "dev/2024.2", label = "Default Branch", description = "The default branch of this build configuration.")
+        text("DefaultBranch_MetalamaTestsNopCommerce", "dev/2024.2", label = "Default Branch", description = "The default branch of this build configuration.")
         text("TimeOut", "300", label = "Time-Out Threshold", description = "Seconds after the duration of the last successful build.", regex = """\d+""", validationMessage = "The timeout has to be an integer number.")
     }
 
     vcs {
-        root(AbsoluteId("Metalama_Metalama20242_MetalamaTests_MetalamaTestsNopCommerce"))
+        root(AbsoluteId("Metalama_Metalama20242_MetalamaTestsNopCommerce"))
     }
 
     steps {
@@ -271,12 +271,12 @@ object PublicBuild : BuildType({
     params {
         text("UpstreamCheckArguments", "", label = "Check pending upstream changes Arguments", description = "Arguments to append to the 'Check pending upstream changes' build step.", allowEmpty = true)
         text("BuildArguments", "", label = "Build Arguments", description = "Arguments to append to the 'Build' build step.", allowEmpty = true)
-        text("DefaultBranch", "dev/2024.2", label = "Default Branch", description = "The default branch of this build configuration.")
+        text("DefaultBranch_MetalamaTestsNopCommerce", "dev/2024.2", label = "Default Branch", description = "The default branch of this build configuration.")
         text("TimeOut", "300", label = "Time-Out Threshold", description = "Seconds after the duration of the last successful build.", regex = """\d+""", validationMessage = "The timeout has to be an integer number.")
     }
 
     vcs {
-        root(AbsoluteId("Metalama_Metalama20242_MetalamaTests_MetalamaTestsNopCommerce"))
+        root(AbsoluteId("Metalama_Metalama20242_MetalamaTestsNopCommerce"))
     }
 
     steps {
@@ -399,12 +399,12 @@ object PublicDeployment : BuildType({
 
     params {
         text("PublishArguments", "", label = "Publish Arguments", description = "Arguments to append to the 'Publish' build step.", allowEmpty = true)
-        text("DefaultBranch", "release/2024.2", label = "Default Branch", description = "The default branch of this build configuration.")
+        text("DefaultBranch_MetalamaTestsNopCommerce", "release/2024.2", label = "Default Branch", description = "The default branch of this build configuration.")
         text("TimeOut", "300", label = "Time-Out Threshold", description = "Seconds after the duration of the last successful build.", regex = """\d+""", validationMessage = "The timeout has to be an integer number.")
     }
 
     vcs {
-        root(AbsoluteId("Metalama_Metalama20242_MetalamaTests_MetalamaTestsNopCommerce"))
+        root(AbsoluteId("Metalama_Metalama20242_MetalamaTestsNopCommerce"))
     }
 
     steps {
@@ -513,12 +513,12 @@ object DownstreamMerge : BuildType({
 
     params {
         text("DownstreamMergeArguments", "", label = "Merge downstream Arguments", description = "Arguments to append to the 'Merge downstream' build step.", allowEmpty = true)
-        text("DefaultBranch", "dev/2024.2", label = "Default Branch", description = "The default branch of this build configuration.")
+        text("DefaultBranch_MetalamaTestsNopCommerce", "dev/2024.2", label = "Default Branch", description = "The default branch of this build configuration.")
         text("TimeOut", "300", label = "Time-Out Threshold", description = "Seconds after the duration of the last successful build.", regex = """\d+""", validationMessage = "The timeout has to be an integer number.")
     }
 
     vcs {
-        root(AbsoluteId("Metalama_Metalama20242_MetalamaTests_MetalamaTestsNopCommerce"))
+        root(AbsoluteId("Metalama_Metalama20242_MetalamaTestsNopCommerce"))
     }
 
     steps {
